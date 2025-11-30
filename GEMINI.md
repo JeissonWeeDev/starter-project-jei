@@ -162,3 +162,113 @@ This is the strict workflow to follow for any code modification or implementatio
 ### 6. Report Instructions (`REPORT_INSTRUCTIONS.md`)
 
 -   This document contains instructions for a project-end report, likely for the user (as an applicant). It does not contain direct development guidelines for the codebase itself.
+
+---
+## Aviso: Configuración de Entorno Específica del Usuario
+
+La siguiente sección detalla una configuración de entorno de desarrollo altamente específica, diseñada para un caso de uso particular (almacenamiento dividido entre SSD y HDD). **Esta configuración no es un requisito para la ejecución estándar del proyecto.** Si usted no comparte esta necesidad específica de dividir los SDKs y el código fuente en diferentes unidades de almacenamiento, puede ignorar esta sección sin que afecte su capacidad para compilar y ejecutar el proyecto.
+
+---
+
+## Contexto Técnico Detallado: Entorno de Desarrollo Flutter en Almacenamiento Dividido
+
+### 1. Resumen Ejecutivo y Objetivo Principal
+
+El entorno de desarrollo ha sido configurado con una arquitectura de almacenamiento dividido. El objetivo principal es mitigar el uso de espacio en el disco de estado sólido (SSD) principal, que es de capacidad limitada, delegando el almacenamiento de herramientas y componentes pesados a un disco duro mecánico (HDD) externo de mayor capacidad.
+
+*   **SSD (Principal):** Reservado para el sistema operativo y el código fuente de los proyectos.
+*   **HDD (Externo):** Aloja los SDKs de Flutter y Android, así como los Dispositivos Virtuales de Android (AVDs), que son los componentes que más espacio consumen.
+
+Cualquier operación, instalación o actualización debe respetar imperativamente esta división.
+
+---
+
+### 2. Arquitectura de Rutas y Ubicaciones de Componentes
+
+La siguiente tabla detalla la ubicación exacta de cada componente crítico:
+
+┌───────────────────┬──────────────────┬───────────────────────────────────────────────────────┐
+│ Componente        │ Ubicación Física │ Ruta Absoluta                                         │
+├───────────────────┼──────────────────┼───────────────────────────────────────────────────────┤
+│ SDK de Flutter    │ HDD Externo      │ /media/jeisonleon/CopiesWee/development/flutter/      │
+│ SDK de Android    │ HDD Externo      │ /media/jeisonleon/CopiesWee/development/android_sdk/  │
+│ AVDs (Emuladores) │ HDD Externo      │ /media/jeisonleon/CopiesWee/development/.android/avd/ │
+│ Código Fuente     │ SSD Principal    │ /home/jeisonleon/Documentos/projects/Technical tests/ │
+└───────────────────┴──────────────────┴───────────────────────────────────────────────────────┘
+
+**IMPERATIVO:** No se debe instalar ni mover ninguno de los SDKs o AVDs a las rutas por defecto (p. ej., `~/` o `~/Android/`). Todas las herramientas deben operar sobre las rutas especificadas en el HDD.
+
+---
+
+### 3. Configuración de Variables de Entorno: El Rol Crítico de `~/.profile`
+
+Toda la configuración de las variables de entorno se ha centralizado en el archivo `~/.profile`.
+
+*   **Archivo de Configuración:** `~/.profile`
+*   **Justificación:** El archivo `~/.bashrc` del usuario contiene una "cláusula de guarda" que impide su ejecución en shells no interactivas (`case $- in ... *) return;; esac`). Dado que las herramientas de automatización y algunos terminales integrados (como los de una IA) pueden usar shells no interactivas, `~/.bashrc` no es una opción fiable para definir el `PATH`. `~/.profile` se carga al iniciar la sesión y sus variables son heredadas por todos los procesos, garantizando que el entorno esté disponible tanto para terminales interactivas como para scripts y aplicaciones GUI.
+
+*   **Variables Definidas en `~/.profile`:**
+    *   `ANDROID_HOME`: Apunta a la raíz del SDK de Android.
+        *   `export ANDROID_HOME="/media/jeisonleon/CopiesWee/development/android_sdk"`
+    *   `ANDROID_AVD_HOME`: Apunta a la carpeta donde se guardan los emuladores.
+        *   `export ANDROID_AVD_HOME="/media/jeisonleon/CopiesWee/development/.android/avd"`
+    *   `PATH`: Se ha modificado para incluir las rutas a los binarios de Flutter y de las herramientas de Android.
+        *   `...:$PATH:/media/jeisonleon/CopiesWee/development/flutter/bin`
+        *   `...:$PATH:$ANDROID_HOME/cmdline-tools/latest/bin`
+        *   `...:$PATH:$ANDROID_HOME/platform-tools/bin`
+        *   `...:$PATH:$ANDROID_HOME/emulator/bin`
+
+---
+
+### 4. Flujo de Trabajo y Comandos Esenciales
+
+**Regla de Oro para Scripts y Terminales No-Login:** Antes de ejecutar cualquier comando de Flutter o Android en un nuevo shell de scripting, se debe asegurar que el entorno esté cargado.
+
+*   **Comando de Activación (OBLIGATORIO en scripts):**
+    ```bash
+    source ~/.profile
+    ```
+    Ejemplo: `source ~/.profile && flutter doctor`
+
+*   **Verificación del Entorno:**
+    ```bash
+    source ~/.profile && flutter doctor
+    ```
+    Resultado esperado: `[✓] Android toolchain` debe aparecer con un tic verde.
+
+*   **Manejo del Emulador:**
+    *   Listar emuladores disponibles: `source ~/.profile && flutter emulators`
+    *   Iniciar el emulador creado: `source ~/.profile && flutter emulator --launch pixel_8_api_34`
+
+*   **Ejecución de la Aplicación:**
+    *   Desde una terminal (ya sea en VS Code o independiente): `source ~/.profile && flutter run`
+    *   Para un dispositivo específico: `source ~/.profile && flutter run -d pixel_8_api_34`
+
+---
+
+### 5. Componentes Instalados y Estado Actual
+
+*   **SDK de Flutter:** Versión 3.22.2 (o la que se haya instalado), canal stable.
+*   **SDK de Android:**
+    *   `platform-tools`
+    *   `build-tools;34.0.0`
+    *   `platforms;android-34`
+    *   `emulator`
+    *   `system-images;android-34;google_apis;x86_64`
+*   **AVD Creado:**
+    *   Nombre: `pixel_8_api_34`
+*   **Licencias de Android:** Todas las licencias han sido aceptadas.
+
+---
+
+### 6. Puntos Críticos y Advertencias para la IA
+
+1.  **NO MODIFICAR `~/.bashrc`:** No intentes añadir ninguna variable de entorno a `~/.bashrc`. Fallará en shells no interactivas. Usa siempre `~/.profile`.
+
+2.  **REINICIO PARA APLICACIONES GRÁFICAS:** Para que aplicaciones como VS Code detecten correctamente las variables de entorno, es necesario reiniciar el sistema o, como mínimo, cerrar la sesión y volver a iniciarla. Abrir una nueva terminal no es suficiente para las aplicaciones GUI.
+
+3.  **VERIFICACIÓN ANTES DE LA ACCIÓN:** Antes de intentar instalar nuevos paquetes o ejecutar la aplicación, siempre ejecuta `source ~/.profile && flutter doctor` para asegurar que el estado del entorno es el esperado.
+
+4.  **PERSISTENCIA DE LA CONFIGURACIÓN:** Todas las rutas son absolutas y apuntan a un disco montado en `/media/jeisonleon/CopiesWee`. Si el punto de montaje del disco cambia, el entorno dejará de funcionar y será necesario actualizar las rutas en `~/.profile`.
+
+5.  **NO USAR `sudo` PARA COMANDOS FLUTTER/SDK:** Ninguno de los comandos de `flutter`, `sdkmanager` o `avdmanager` debe ejecutarse con `sudo`. Todos los permisos están a nivel de usuario.
