@@ -4,7 +4,7 @@
         android:label="news_app_clean_architecture"
         android:name="androidx.multidex.MultiDexApplication"
         
-        android:icon="@mipmap/true"
+        android:icon="@mipmap/ic_launcher_new"
         >
         <activity
             android:name=".MainActivity"
