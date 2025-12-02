@@ -26,6 +26,14 @@ Siguiendo el plan, procedí a configurar la conexión con Firebase. Este proceso
 
 **Logro Clave:** Con la configuración de Gradle corregida y el archivo `google-services.json` en su lugar, la aplicación ahora se compila y ejecuta reconociendo la conexión con el backend de Firebase. El primer y más crítico prerrequisito del plan de implementación ha sido completado.
 
+#### Hito 3: Activación del Entorno de Desarrollo Local
+Para completar el ciclo de desarrollo, el siguiente paso fue activar el entorno de backend local y generar el código de soporte de la aplicación.
+
+1.  **Inicialización del Backend:** Se ejecutaron los comandos `firebase init` y `firebase emulators:start`, configurando y lanzando con éxito los emuladores locales para Firestore y Storage.
+2.  **Generación de Código:** Se ejecutó el comando `flutter pub run build_runner build --delete-conflicting-outputs` en el frontend. Este paso es crucial, ya que genera automáticamente el código necesario para que la aplicación interactúe con la base de datos local (`Floor`) y los servicios API (`Retrofit`).
+
+**Logro Clave:** El entorno de desarrollo local está 100% operativo. El frontend se ejecuta y puede comunicarse con el backend emulado localmente. Todos los archivos de código necesarios han sido generados. La base para implementar nuevas funcionalidades está completa.
+
 ---
 
 ### 2. Mi Plan de Tareas para la Prueba Técnica
@@ -38,7 +46,7 @@ A continuación, detallo el plan de tareas que he definido para cumplir con el r
     -   Generar y colocar el archivo `google-services.json` en `frontend/android/app/`.
     -   Asegurar que las reglas de Firestore y Storage permitan la lectura/escritura.
 
--   [ ] **Generar Archivos Necesarios (`build_runner`):**
+-   [x] **Generar Archivos Necesarios (`build_runner`):**
     -   Ejecutar `flutter pub run build_runner build --delete-conflicting-outputs`.
 
 -   [ ] **Generar los Íconos de la Aplicación:**
