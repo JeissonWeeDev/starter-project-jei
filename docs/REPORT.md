@@ -49,7 +49,7 @@ A continuación, detallo el plan de tareas que he definido para cumplir con el r
 -   [x] **Generar Archivos Necesarios (`build_runner`):**
     -   Ejecutar `flutter pub run build_runner build --delete-conflicting-outputs`.
 
--   [ ] **Generar los Íconos de la Aplicación:**
+-   [x] **Generar los Íconos de la Aplicación:**
     -   Asegurar que exista `frontend/assets/icon/icon.png`.
     *   Ejecutar `flutter pub run flutter_launcher_icons`.
 
