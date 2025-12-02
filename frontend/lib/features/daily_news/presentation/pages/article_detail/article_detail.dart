@@ -117,7 +117,7 @@ class ArticleDetailsView extends HookWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         backgroundColor: Colors.black,
-        content: Text('Article saved successfully.'),
+        content: Text('Article saved successfully!'),
       ),
     );
   }
