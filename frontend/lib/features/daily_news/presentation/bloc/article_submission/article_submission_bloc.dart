@@ -28,8 +28,9 @@ class ArticleSubmissionBloc extends Bloc<ArticleSubmissionEvent, ArticleSubmissi
   }
 
   void onSubmittedArticle(SubmitArticle event, Emitter<ArticleSubmissionState> emit) async {
+    print('onSubmittedArticle called with title: ${event.title}');
     emit(ArticleSubmissionLoading(selectedImage: _selectedImage));
-    
+
     // We need to pass the current _selectedImage as part of the entity or separately if not part of entity
     final entity = ArticleSubmissionEntity(
       title: event.title,
@@ -41,12 +42,15 @@ class ArticleSubmissionBloc extends Bloc<ArticleSubmissionEvent, ArticleSubmissi
     );
 
     final dataState = await _submitArticleUseCase(params: entity);
+    print('Use case returned: $dataState');
 
     if (dataState is DataSuccess) {
+      print('Emitting ArticleSubmissionSuccess');
       emit(const ArticleSubmissionSuccess(message: 'Article submitted successfully!'));
       _selectedImage = null; // Clear selected image after successful submission
     }
     if (dataState is DataFailed) {
+      print('Emitting ArticleSubmissionError');
       emit(ArticleSubmissionError(dataState.error.toString(), selectedImage: _selectedImage));
     }
   }

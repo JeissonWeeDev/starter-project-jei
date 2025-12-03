@@ -10,7 +10,7 @@ import '../../bloc/article/local/local_article_event.dart';
 class ArticleDetailsView extends HookWidget {
   final ArticleEntity? article;
 
-  const ArticleDetailsView({Key? key, this.article}) : super(key: key);
+  const ArticleDetailsView({super.key, this.article});
 
   @override
   Widget build(BuildContext context) {

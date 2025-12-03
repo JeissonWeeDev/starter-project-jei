@@ -1,17 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import 'package:image_picker/image_picker.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article_submission/article_submission_bloc.dart';
-import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article_submission/article_submission_event.dart';
-import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article_submission/article_submission_state.dart';
-import 'package:get_it/get_it.dart'; // For accessing BLoC via GetIt
-import 'package:image_picker/image_picker.dart'; // For image picking
-import 'dart:io'; // For File
+
+import 'package:get_it/get_it.dart';
+
+import '../../bloc/article_submission/article_submission_bloc.dart';
+
+import '../../bloc/article_submission/article_submission_event.dart';
+
+import '../../bloc/article_submission/article_submission_state.dart';
 
 class ArticleSubmissionPage extends StatefulWidget {
-  const ArticleSubmissionPage({super.key});
-
   @override
-  State<ArticleSubmissionPage> createState() => _ArticleSubmissionPageState();
+  _ArticleSubmissionPageState createState() => _ArticleSubmissionPageState();
 }
 
 class _ArticleSubmissionPageState extends State<ArticleSubmissionPage> {
@@ -22,7 +27,7 @@ class _ArticleSubmissionPageState extends State<ArticleSubmissionPage> {
 
   File? _imageFile; // To store the selected image file
 
-  ArticleSubmissionBloc get _bloc => GetIt.instance<ArticleSubmissionBloc>();
+  // Removed: ArticleSubmissionBloc get _bloc => GetIt.instance<ArticleSubmissionBloc>();
 
   @override
   void dispose() {
@@ -39,13 +44,15 @@ class _ArticleSubmissionPageState extends State<ArticleSubmissionPage> {
       setState(() {
         _imageFile = File(image.path);
       });
-      _bloc.add(SelectImage(_imageFile));
+      context.read<ArticleSubmissionBloc>().add(SelectImage(_imageFile));
     }
   }
 
   void _submitArticle() {
+    print('Submit button pressed');
     if (_formKey.currentState!.validate()) {
-      _bloc.add(
+      print('Form validated, adding SubmitArticle event');
+      context.read<ArticleSubmissionBloc>().add(
         SubmitArticle(
           title: _titleController.text,
           content: _contentController.text,
@@ -53,6 +60,8 @@ class _ArticleSubmissionPageState extends State<ArticleSubmissionPage> {
           imageFile: _imageFile,
         ),
       );
+    } else {
+      print('Form validation failed');
     }
   }
 
@@ -63,10 +72,12 @@ class _ArticleSubmissionPageState extends State<ArticleSubmissionPage> {
         title: const Text('Submit New Article'),
       ),
       body: BlocProvider<ArticleSubmissionBloc>(
-        create: (context) => _bloc, // Provide the BLoC
+        create: (context) => GetIt.instance<ArticleSubmissionBloc>(), // Corrected BLoC provision
         child: BlocListener<ArticleSubmissionBloc, ArticleSubmissionState>(
           listener: (context, state) {
+            print('BlocListener triggered with state: $state');
             if (state is ArticleSubmissionSuccess) {
+              print('ArticleSubmissionSuccess detected');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message ?? 'Article submitted!')),
               );
@@ -79,6 +90,7 @@ class _ArticleSubmissionPageState extends State<ArticleSubmissionPage> {
               // Optionally navigate back
               // Navigator.pop(context);
             } else if (state is ArticleSubmissionError) {
+              print('ArticleSubmissionError detected');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message ?? 'Submission failed!')),
               );

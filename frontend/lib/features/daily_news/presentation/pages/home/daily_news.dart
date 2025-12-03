@@ -8,14 +8,14 @@ import '../../../domain/entities/article.dart';
 import '../../widgets/article_tile.dart';
 
 class DailyNews extends StatelessWidget {
-  const DailyNews({Key? key}) : super(key: key);
+  const DailyNews({super.key});
 
   @override
   Widget build(BuildContext context) {
     return _buildPage();
   }
 
-  _buildAppbar(BuildContext context) {
+  AppBar _buildAppbar(BuildContext context) {
     return AppBar(
       title: const Text(
         'Daily News',
@@ -33,7 +33,7 @@ class DailyNews extends StatelessWidget {
     );
   }
 
-  _buildPage() {
+  BlocBuilder<RemoteArticlesBloc, RemoteArticlesState> _buildPage() {
     return BlocBuilder<RemoteArticlesBloc, RemoteArticlesState>(
       builder: (context, state) {
         if (state is RemoteArticlesLoading) {

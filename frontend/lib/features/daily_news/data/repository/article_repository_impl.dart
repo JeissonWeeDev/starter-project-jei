@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart'; // Keep original import, but use DioException
 import 'package:news_app_clean_architecture/core/constants/constants.dart';
 import 'package:news_app_clean_architecture/features/daily_news/data/data_sources/local/app_database.dart';
 import 'package:news_app_clean_architecture/features/daily_news/data/models/article.dart';
@@ -31,16 +31,17 @@ class ArticleRepositoryImpl implements ArticleRepository {
     if (httpResponse.response.statusCode == HttpStatus.ok) {
       return DataSuccess(httpResponse.data);
     } else {
+      // Use DioException and DioExceptionType.badResponse for dio 5.x
       return DataFailed(
-        DioError(
+        DioException( // Changed from DioError
           error: httpResponse.response.statusMessage,
           response: httpResponse.response,
-          type: DioErrorType.response,
+          type: DioExceptionType.badResponse, // Changed from DioErrorType.response
           requestOptions: httpResponse.response.requestOptions
         )
       );
     }
-   } on DioError catch(e){
+   } on DioException catch(e){ // Changed from DioError
     return DataFailed(e);
    }
   }

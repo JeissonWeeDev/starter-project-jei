@@ -20,7 +20,7 @@ class AppRoutes {
         return _materialRoute(const SavedArticles());
 
       case '/ArticleSubmission': // New route
-        return _materialRoute(const ArticleSubmissionPage());
+        return _materialRoute(ArticleSubmissionPage());
         
       default:
         return _materialRoute(const DailyNews());
