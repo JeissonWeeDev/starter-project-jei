@@ -59,7 +59,8 @@ A continuación, detallo el plan de tareas que he definido para cumplir con el r
     -   Integrar con Firebase Storage para la subida de imágenes (si aplica).
     -   Adherirme estrictamente a la Arquitectura Limpia del proyecto.
 
--   [ ] **Revisar Documentación del Proyecto:**
-    -   Asegurar que toda la implementación cumpla con las guías en `docs/`.
+### Hito 4: Implementación Frontend con Mocks y Correcciones Críticas
 
----
+Intenté implementar la funcionalidad de subida de artículos para el frontend con mocks, pero me encontré con un persistente y complejo conflicto de versiones de Kotlin en Gradle. Fue una batalla ardua, ya que el proyecto se negaba a compilar debido a errores de incompatibilidad de versiones (específicamente, un módulo compilado con Kotlin 1.8.0 cuando se esperaba 1.6.0). Tras múltiples intentos de actualización y reversión de versiones (kotlin_version, Android Gradle Plugin) en los archivos `build.gradle`, así como una limpieza agresiva y repetida de cachés de Gradle (`flutter clean`, eliminación de `.gradle` del proyecto), finalmente logré restaurar el proyecto a un estado compilable y funcional. El frontend vuelve a correr, los íconos están bien y el dolor de cabeza de la configuración se ha mitigado.
+
+Sin embargo, al verificar visualmente la nueva `ArticleSubmissionPage` (la página de envío de artículos), noté que la UI se renderiza correctamente y los campos de texto funcionan. Pero, al pulsar el botón 'Submit Article', no se activa ninguna acción visible ni en la UI (no aparece el SnackBar de éxito) ni en la consola de depuración (no se imprime el mensaje mock del repositorio). Esto sugiere un problema en la correcta conexión de la UI con el `ArticleSubmissionBloc`.
