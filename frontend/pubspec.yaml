@@ -40,6 +40,8 @@ dependencies:
   cloud_firestore: ^4.13.3
   firebase_storage: ^11.5.5
 
+  # Image picker for selecting images
+  image_picker: ^1.0.4 # New dependency
 
   #Hooks
   flutter_hooks: ^0.18.3

@@ -11,6 +11,11 @@ import 'features/daily_news/domain/usecases/remove_article.dart';
 import 'features/daily_news/domain/usecases/save_article.dart';
 import 'features/daily_news/presentation/bloc/article/local/local_article_bloc.dart';
 
+// New imports for article submission feature
+import 'package:news_app_clean_architecture/features/daily_news/domain/usecases/submit_article.dart';
+import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article_submission/article_submission_bloc.dart';
+
+
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
@@ -45,6 +50,10 @@ Future<void> initializeDependencies() async {
     RemoveArticleUseCase(sl())
   );
 
+  sl.registerSingleton<SubmitArticleUseCase>( // New UseCase
+    SubmitArticleUseCase(sl())
+  );
+
 
   //Blocs
   sl.registerFactory<RemoteArticlesBloc>(
@@ -55,5 +64,8 @@ Future<void> initializeDependencies() async {
     ()=> LocalArticleBloc(sl(),sl(),sl())
   );
 
+  sl.registerFactory<ArticleSubmissionBloc>( // New BLoC
+    ()=> ArticleSubmissionBloc(sl())
+  );
 
 }

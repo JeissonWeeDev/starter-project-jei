@@ -7,14 +7,18 @@ import 'package:news_app_clean_architecture/features/daily_news/data/models/arti
 import 'package:news_app_clean_architecture/core/resources/data_state.dart';
 import 'package:news_app_clean_architecture/features/daily_news/domain/entities/article.dart';
 import 'package:news_app_clean_architecture/features/daily_news/domain/repository/article_repository.dart';
+import 'package:news_app_clean_architecture/features/daily_news/domain/entities/article_submission.dart'; // Import the new entity
 
 import '../data_sources/remote/news_api_service.dart';
 
 class ArticleRepositoryImpl implements ArticleRepository {
   final NewsApiService _newsApiService;
   final AppDatabase _appDatabase;
-  ArticleRepositoryImpl(this._newsApiService,this._appDatabase);
-  
+  // We will add FirebaseArticleApiService later, when implementing the real data layer.
+  // final FirebaseArticleApiService _firebaseArticleApiService;
+
+  ArticleRepositoryImpl(this._newsApiService, this._appDatabase); // Constructor for mock
+
   @override
   Future<DataState<List<ArticleModel>>> getNewsArticles() async {
    try {
@@ -56,4 +60,13 @@ class ArticleRepositoryImpl implements ArticleRepository {
     return _appDatabase.articleDAO.insertArticle(ArticleModel.fromEntity(article));
   }
   
+  // Mock implementation for article submission
+  @override
+  Future<DataState<void>> submitArticle(ArticleSubmissionEntity article) async {
+    // Simulate a successful submission after a delay
+    await Future.delayed(const Duration(seconds: 2));
+    print('Mock: Article submitted successfully!');
+    print('Mock Data: Title: ${article.title}, Content: ${article.content}, Author: ${article.author}, Image: ${article.imageUrl}');
+    return const DataSuccess(null);
+  }
 }
