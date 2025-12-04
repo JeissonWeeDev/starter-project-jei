@@ -69,3 +69,17 @@ Sin embargo, al verificar visualmente la nueva `ArticleSubmissionPage` (la pági
 Durante la fase de despliegue del backend, se encontró un obstáculo insuperable: la activación de Firebase Storage en el proyecto `jei-news-app-test` requiere una actualización al plan de facturación "Blaze". A pesar de múltiples intentos con diferentes métodos de pago, el sistema de facturación de Google Cloud declinó las tarjetas, impidiendo la actualización del plan.
 
 **Decisión Técnica:** Debido a este bloqueo externo, se ha tomado la decisión de **des-prioritizar y eliminar la funcionalidad de subida de imágenes** para poder avanzar con el resto de la prueba técnica. El desarrollo continuará enfocándose en la creación y almacenamiento de artículos (solo texto) en Firebase Firestore. Esta desviación del plan original es una medida pragmática para asegurar la entrega de la funcionalidad principal de la aplicación.
+
+### Hito 5: Automatización del Entorno de Desarrollo
+
+Durante las pruebas en un dispositivo físico, identifiqué un punto de fricción importante en el flujo de trabajo: la dirección IP de mi máquina de desarrollo cambiaba, lo que me obligaba a modificar manualmente el código fuente para que la app se conectara al emulador de Firebase. Este proceso era tedioso y propenso a errores.
+
+Para optimizar la experiencia de desarrollo, diseñé e implementé una solución robusta que automatiza completamente esta configuración.
+
+1.  **Implementé una configuración dinámica en `main.dart`**: Modifiqué el punto de entrada de la aplicación para que leyera variables de entorno inyectadas en tiempo de compilación. Usando `String.fromEnvironment`, la aplicación ahora puede diferenciar entre un entorno de `desarrollo` y uno de `producción`. En modo de desarrollo, la app busca la IP del host del emulador que se le pasa como variable.
+
+2.  **Creé un script de ejecución (`run_dev.sh`)**: Para facilitar al máximo el proceso, creé un script de shell que se encarga de todo el trabajo pesado. Al ejecutarlo, el script:
+    *   Obtiene automáticamente la dirección IP local actual de la máquina.
+    *   Lanza la aplicación Flutter con el comando `flutter run`, usando la bandera `--dart-define` para pasar dinámicamente tanto el entorno de desarrollo como la IP recién obtenida.
+
+**Logro Clave:** Este enfoque no solo resolvió el problema original, sino que también estableció una separación clara y profesional entre los entornos de desarrollo y producción. Eliminé la necesidad de gestionar IPs manualmente, mejorando significativamente la agilidad y fiabilidad del flujo de trabajo de desarrollo.
