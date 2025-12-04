@@ -13,8 +13,7 @@ service cloud.firestore {
                         request.resource.data.description is string &&
                         request.resource.data.content is string &&
                         request.resource.data.publishedAt is timestamp &&
-                        (request.resource.data.url == null || request.resource.data.url is string) &&
-                        (request.resource.data.thumbnailURL == null || request.resource.data.thumbnailURL is string);
+                        (request.resource.data.url == null || request.resource.data.url is string);
 
       allow update: if request.auth != null &&
                         request.resource.data.keys().hasAll(['author', 'title', 'description', 'content', 'publishedAt']) && // Ensure required fields are still present
@@ -23,19 +22,9 @@ service cloud.firestore {
                         request.resource.data.description is string &&
                         request.resource.data.content is string &&
                         request.resource.data.publishedAt is timestamp &&
-                        (request.resource.data.url == null || request.resource.data.url is string) &&
-                        (request.resource.data.thumbnailURL == null || request.resource.data.thumbnailURL is string);
+                        (request.resource.data.url == null || request.resource.data.url is string);
 
       allow delete: if request.auth != null; // Only authenticated users can delete
-    }
-  }
-}
-
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /media/articles/{imageId} {
-      allow write: if request.auth != null && request.resource.size < 5 * 1024 * 1024 && request.resource.contentType.matches('image/.*');
-      allow read: if true;
     }
   }
 }

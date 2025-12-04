@@ -1,9 +1,7 @@
 # Article Schema for Firebase Firestore
 
 This document defines the schema for the 'articles' collection in Firebase Firestore,
-which will store information about news articles. This schema is designed to
-support the functionality of journalists uploading their own articles, including
-an optional image (thumbnail).
+which will store information about news articles.
 
 ## Collection: `articles`
 
@@ -19,18 +17,4 @@ Each document in the `articles` collection represents a single news article.
 | `description`  | `string` | A short summary or description of the article.                      | Yes      |                                                                                                          |
 | `content`      | `string` | The full body content of the article.                               | Yes      |                                                                                                          |
 | `url`          | `string` | URL to the original source of the article (if external).            | No       | This will likely point to the article within the app itself, or be left empty for user-submitted.       |
-| `thumbnailURL` | `string` | URL to the article's thumbnail image in Firebase Cloud Storage.     | No       | **Crucial:** Must reference an image in the `media/articles` folder of Firebase Cloud Storage. Optional. |
 | `publishedAt`  | `timestamp` | Date and time when the article was published/created.               | Yes      | Use Firestore's `FieldValue.serverTimestamp()` for consistency.                                          |
-
----
-
-## Firebase Cloud Storage Structure
-
-### Folder: `media/articles`
-
-This folder in Firebase Cloud Storage will store all thumbnail images associated with articles.
-
-### File Naming Convention:
-
-`[unique_image_id].png` (e.g., `1678886400000.png` based on timestamp, or a UUID)
-The `thumbnailURL` field in the Firestore document will store the download URL for these images.
