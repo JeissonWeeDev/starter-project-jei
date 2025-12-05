@@ -1,6 +1,18 @@
 # Bitácora de Proyecto y Plan de Implementación
 
-**Rama Actual:** `feature/setup-and-planning`
+**Rama de Desarrollo:** `feature/setup-and-planning`
+
+## Diseño y Visión del Proyecto
+
+Este proyecto fue concebido con una visión clara de la interfaz de usuario y la experiencia de usuario desde sus etapas iniciales. Para ello, se utilizó Figma como herramienta principal de 
+diseño.
+
+**Figma Link:** [Ver Diseño del Proyecto en Figma](https://www.figma.com/design/4DqiZWSd7Oy0q4J85UtBf9/Starter-Project-Jei---Technical-Test-Symmetry?node-id=0-1&t=Cj5YR457BGFOyD4f-1)
+Aquí podrás explorar el estado actual de la interfaz de usuario y un sencillo whiteboard que detalla el diseño conceptual del logo y la identidad visual...
+
+---
+
+![Cover Presentation](assets/cover-presentation.png)
 
 Este documento es mi bitácora personal de progreso. Aquí registro las decisiones técnicas que tomo, los desafíos que supero y el plan de acción que sigo para completar esta prueba técnica.
 
@@ -111,9 +123,10 @@ A pesar de estos desafíos técnicos y externos que escaparon a mi control, y pa
 **Aprendizajes Clave:**
 
 Este proceso ha sido una experiencia de aprendizaje intensa, destacando la importancia crítica de un entorno de desarrollo bien configurado y la necesidad de sistemas de depuración adaptables a las limitaciones del entorno. Las filosofías de arquitectura limpia y la necesidad de una documentación de reportes detallada, tal como se promovió en las guías del proyecto, me han parecido extremadamente interesantes y valiosas. Reafirmo mi compromiso con estas metodologías y buscaré aplicarlas consistentemente en mi carrera como desarrollador, a pesar de los evidentes retos encontrados en esta ocasión.
-```
 
-#### El Viaje por la Depuración y la Mejora del Entorno
+---
+
+### El Viaje por la Depuración y la Mejora del Entorno
 
 La fase de depuración ha sido un claro ejemplo de la importancia de herramientas de diagnóstico robustas y adaptables. Inicialmente, la falta de visibilidad sobre la salida de la consola de `flutter run` en el entorno del usuario obligó a un cambio radical de estrategia:
 
