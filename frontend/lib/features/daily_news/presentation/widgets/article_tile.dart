@@ -10,12 +10,12 @@ class ArticleWidget extends StatelessWidget {
   final void Function(ArticleEntity article)? onArticlePressed;
 
   const ArticleWidget({
-    Key? key,
+    super.key,
     this.article,
     this.onArticlePressed,
     this.isRemovable = false,
     this.onRemove,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +61,10 @@ class ArticleWidget extends StatelessWidget {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 3,
                   height: double.maxFinite,
-                  child: CupertinoActivityIndicator(),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.08),
                   ),
+                  child: CupertinoActivityIndicator(),
                 ),
               ),
             ),
@@ -75,10 +75,10 @@ class ArticleWidget extends StatelessWidget {
                 child: Container(
                   width: MediaQuery.of(context).size.width / 3,
                   height: double.maxFinite,
-                  child: Icon(Icons.error),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.08),
                   ),
+                  child: Icon(Icons.error),
                 ),
               ),
             ));

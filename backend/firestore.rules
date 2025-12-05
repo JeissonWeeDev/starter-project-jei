@@ -2,6 +2,34 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // TODO: WRITE ANY NECESSARY FIRESTORE RULES HERE
+    // Rules for the 'articles' collection
+    match /articles/{articleId} {
+      allow read: if true; // Anyone can read articles
+
+      allow create: if request.auth != null &&
+                        request.resource.data.keys().hasAll(['author', 'title', 'description', 'content', 'publishedAt']) &&
+                        request.resource.data.author is string &&
+                        request.resource.data.title is string &&
+                        request.resource.data.description is string &&
+                        request.resource.data.content is string &&
+                        request.resource.data.publishedAt is timestamp &&
+                        (request.resource.data.url == null || request.resource.data.url is string);
+
+      allow update: if request.auth != null &&
+                        request.resource.data.keys().hasAll(['author', 'title', 'description', 'content', 'publishedAt']) && // Ensure required fields are still present
+                        request.resource.data.author is string &&
+                        request.resource.data.title is string &&
+                        request.resource.data.description is string &&
+                        request.resource.data.content is string &&
+                        request.resource.data.publishedAt is timestamp &&
+                        (request.resource.data.url == null || request.resource.data.url is string);
+
+      allow delete: if request.auth != null; // Only authenticated users can delete
+    }
+
+    // Rules for health-check collection (for server status monitoring)
+    match /health-check/{document=**} {
+      allow read: if true;
+    }
   }
 }

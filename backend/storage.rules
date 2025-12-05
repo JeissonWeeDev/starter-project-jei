@@ -2,6 +2,7 @@ rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
-    //TODO: WRITE ANY NECESSARY STORAGE RULES HERE
-    }
+    // Disallow all reads and writes as Firebase Storage is no longer in use.
+    allow read, write: if false;
+  }
 }
