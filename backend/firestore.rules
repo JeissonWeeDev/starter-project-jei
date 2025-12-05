@@ -26,5 +26,10 @@ service cloud.firestore {
 
       allow delete: if request.auth != null; // Only authenticated users can delete
     }
+
+    // Rules for health-check collection (for server status monitoring)
+    match /health-check/{document=**} {
+      allow read: if true;
+    }
   }
 }
