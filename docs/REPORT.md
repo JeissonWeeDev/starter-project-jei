@@ -82,4 +82,32 @@ Para optimizar la experiencia de desarrollo, diseñé e implementé una solució
     *   Obtiene automáticamente la dirección IP local actual de la máquina.
     *   Lanza la aplicación Flutter con el comando `flutter run`, usando la bandera `--dart-define` para pasar dinámicamente tanto el entorno de desarrollo como la IP recién obtenida.
 
-**Logro Clave:** Este enfoque no solo resolvió el problema original, sino que también estableció una separación clara y profesional entre los entornos de desarrollo y producción. Eliminé la necesidad de gestionar IPs manualmente, mejorando significativamente la agilidad y fiabilidad del flujo de trabajo de desarrollo.
+**Logro Clave:** Este enfoque no solo resolvió el problema original, sino que también estableció una separación clara y profesional entre los entornos de desarrollo y producción. Eliminé la necesidad de gestionar IPs manualmente, mejorando significativamente la agilidad y fiabilidad del flujo de trabajo del desarrollador.
+
+---
+
+### Conclusión y Aprendizajes del Proceso de Depuración
+
+Este proceso de implementación y depuración se ha enfrentado a numerosos desafíos, especialmente en lo que respecta a la conectividad y configuración del entorno de desarrollo local con Firebase.
+
+A pesar de las múltiples modificaciones y esfuerzos por lograr una conexión estable y un flujo de trabajo de desarrollo eficiente, persisten inconvenientes significativos:
+
+1.  **Conectividad del Servidor Local (Firebase Emulator):** Aunque se ha logrado que el emulador de Firebase sea accesible desde el navegador web del PC usando su IP (`192.168.5.105`), la aplicación Flutter en el dispositivo móvil todavía reporta errores al intentar conectarse. Esto sugiere que, a pesar de la configuración del firewall y la vinculación del emulador a `0.0.0.0`, la aplicación no logra establecer la comunicación.
+
+2.  **Problemas de Despliegue y Hot Reload:** Se experimentaron dificultades persistentes para que los cambios en el código se reflejaran consistentemente en el dispositivo, lo que impactó directamente la eficacia del Hot Reload. Esto llevó a la implementación de scripts (`setup_dev_env.sh`) y a la hardcodeación temporal de IPs en el código (`main.dart`) como medidas paliativas, aunque no ideales para un entorno de producción.
+
+3.  **Bloqueo por Firebase Billing:** Un impedimento externo y crítico fue la imposibilidad de activar Firebase Storage debido a fallos en el sistema de facturación de Google Cloud para el plan "Blaze". Esto bloqueó completamente la funcionalidad de subida de imágenes y forzó una re-priorización del alcance del proyecto hacia el almacenamiento de solo texto.
+
+4.  **Sistema de Debugging en Interfaz (On-Screen Debug Console):** Ante la imposibilidad de acceder a la terminal de depuración tradicional, se implementó un sistema de logging directamente en la interfaz de usuario (`DebugService`, `DebugConsole`). Esta herramienta, aunque funcional y esencial para visualizar los logs internos y errores en tiempo real, se vio afectada por problemas de layout (`BOTTOM OVERFLOW`) que requirieron correcciones adicionales.
+
+**Imposibilidad de Implementación Completa:**
+
+Debido a la concatenación de estos factores –problemas persistentes de conectividad con el emulador, dificultades en el ciclo de desarrollo, y el bloqueo insuperable con el sistema de facturación de Firebase que impidió la activación de Storage–, no fue posible realizar la implementación completa del sistema de añadir artículos nuevos, especialmente en lo que respecta a la funcionalidad de subida de imágenes y la persistencia final de datos.
+
+**Compromiso y Entrega de Avance:**
+
+A pesar de estos desafíos técnicos y externos que escaparon a mi control, y para no faltar al respeto al tiempo acordado, he decidido enviar el avance del proyecto tal como se encuentra. Se ha logrado una interfaz de usuario básica para el formulario de artículos, se han implementado mecanismos de carga y feedback visual, y se ha desarrollado un robusto sistema de depuración en pantalla.
+
+**Aprendizajes Clave:**
+
+Este proceso ha sido una experiencia de aprendizaje intensa, destacando la importancia crítica de un entorno de desarrollo bien configurado y la necesidad de sistemas de depuración adaptables a las limitaciones del entorno. Las filosofías de arquitectura limpia y la necesidad de una documentación de reportes detallada, tal como se promovió en las guías del proyecto, me han parecido extremadamente interesantes y valiosas. Reafirmo mi compromiso con estas metodologías y buscaré aplicarlas consistentemente en mi carrera como desarrollador, a pesar de los evidentes retos encontrados en esta ocasión.
