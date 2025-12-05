@@ -15,4 +15,7 @@ abstract class ArticleRepository {
 
   // Article Submission methods
   Future<DataState<void>> submitArticle(ArticleSubmissionEntity article);
+
+  // Server Status methods
+  Future<DataState<void>> checkServerStatus();
 }
